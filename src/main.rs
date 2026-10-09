@@ -25,7 +25,12 @@ fn main() -> eframe::Result {
 
 struct PrimeApp {
     tab_current: usize,
-    tab_names: [&'static str; 3]
+    tab_names: [&'static str; 3],
+    input_start_value: String,
+    input_start_value_previous: String,
+    input_range_value: String,
+    input_range_value_previous: String,
+    output_results_value: String
 }
 
 
@@ -34,7 +39,12 @@ impl Default for PrimeApp {
     fn default() -> Self {
         Self {
             tab_current: 0,
-            tab_names: ["Functions", "Validation", "About"]
+            tab_names: ["Functions", "Validation", "About"],
+            input_start_value: String::new(),
+            input_start_value_previous: String::new(),
+            input_range_value: String::new(),
+            input_range_value_previous: String::new(),
+            output_results_value: String::new(),
         }
     }
 }
@@ -55,11 +65,86 @@ impl eframe::App for PrimeApp {
             });
 
             ui.separator();
-            ui.add_space(10.0);
+            ui.add_space(5.0);
 
             match self.tab_current {
                 0 => {
-                    ui.heading("Functions page");
+                    egui::Grid::new("about_grid").show(ui, |ui| {
+
+                        ui.label("Start");
+                        let input_start = ui.add_sized(
+                            [175.0, 20.0],
+                            egui::TextEdit::singleline(&mut self.input_start_value)
+                                .font(egui::TextStyle::Monospace)
+                        );
+                        if input_start.changed() {
+                            self.input_start_value.retain(|c| c.is_ascii_digit());
+
+                            if self.input_start_value.is_empty() {
+                                self.input_start_value_previous.clear();
+                            } else {
+                                match self.input_start_value.parse::<i64>() {
+                                    Ok(_) => {
+                                        self.input_start_value = self.input_start_value.trim_start_matches('0').to_string();
+                                        self.input_start_value_previous = self.input_start_value.clone();
+                                    }
+                                    Err(_) => {
+                                        self.input_start_value = self.input_start_value_previous.clone();
+                                    }
+                                }
+                            }
+                        }
+                        if ui.button("Check").clicked() {
+                            println!("Pressed button 'Check'");
+                        }
+                        
+                        ui.end_row();
+
+                        ui.label("Range");
+                        let input_range = ui.add_sized(
+                            [175.0, 20.0],
+                            egui::TextEdit::singleline(&mut self.input_range_value)
+                                .font(egui::TextStyle::Monospace)
+                        );
+                        if input_range.changed() {
+                            self.input_range_value.retain(|c| c.is_ascii_digit());
+
+                            if self.input_range_value.is_empty() {
+                                self.input_range_value_previous.clear();
+                            } else {
+                                match self.input_range_value.parse::<i64>() {
+                                    Ok(_) => {
+                                        self.input_range_value_previous = self.input_range_value.clone();
+                                    }
+                                    Err(_) => {
+                                        self.input_range_value = self.input_range_value_previous.clone();
+                                    }
+                                }
+                            }
+                        }
+                        if ui.button("Count").clicked() {
+                            println!("Pressed button 'Count'");
+                        }
+                        
+                        if ui.button("List").clicked() {
+                            println!("Pressed button 'List'");
+                        }
+                        ui.end_row();
+
+                    });
+
+                    ui.add_space(5.0);
+                    egui::ScrollArea::vertical()
+                        .auto_shrink([false, false])
+                        .show(ui, |ui| {
+                            ui.add_sized(
+                                ui.available_size(),
+                                egui::TextEdit::multiline(&mut self.output_results_value)
+                                    .font(egui::TextStyle::Monospace)
+                                    .lock_focus(true)
+                                    .interactive(false)
+                            );
+                        });
                 },
                 1 => {
                     ui.heading("Validation page");
