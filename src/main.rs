@@ -33,7 +33,7 @@ fn main() -> eframe::Result {
 
 struct PrimeApp {
     tab_current: usize,
-    tab_names: [&'static str; 3],
+    tab_names: [&'static str; 4],
     input_start_value: String,
     input_start_value_previous: String,
     input_range_value: String,
@@ -47,7 +47,7 @@ impl Default for PrimeApp {
     fn default() -> Self {
         Self {
             tab_current: 0,
-            tab_names: ["Functions", "Validation", "About"],
+            tab_names: ["Functions", "Validation", "Explanation", "About"],
             input_start_value: String::new(),
             input_start_value_previous: String::new(),
             input_range_value: String::new(),
@@ -180,6 +180,9 @@ impl eframe::App for PrimeApp {
                     ui.heading("Validation page");
                 },
                 2 => {
+                    ui.heading("Explanation page");
+                },
+                3 => {
                     egui::Grid::new("about_grid").show(ui, |ui| {
                             
                         ui.label("Project");
