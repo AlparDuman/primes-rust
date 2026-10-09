@@ -65,27 +65,25 @@ impl eframe::App for PrimeApp {
                     ui.heading("Validation page");
                 },
                 2 => {
-                    egui::Grid::new("about_grid")
-                        .num_columns(2)
-                        .show(ui, |ui| {
+                    egui::Grid::new("about_grid").show(ui, |ui| {
                             
-                            ui.label("Project");
-                            ui.hyperlink_to(env!("CARGO_PKG_NAME"), "https://github.com/AlparDuman/primes-rust");
-                            ui.end_row();
-                            
-                            ui.label("Version");
-                            ui.label(env!("CARGO_PKG_VERSION"));
-                            ui.end_row();
-                            
-                            ui.label("Author");
-                            ui.hyperlink_to("Alpar Duman", "https://alparduman.de/");
-                            ui.end_row();
-                            
-                            ui.label("License");
-                            ui.hyperlink_to("GNU General Public License v3.0", "https://github.com/AlparDuman/primes-rust/blob/main/LICENSE");
-                            ui.end_row();
+                        ui.label("Project");
+                        ui.hyperlink_to(env!("CARGO_PKG_NAME"), "https://github.com/AlparDuman/primes-rust");
+                        ui.end_row();
+                        
+                        ui.label("Version");
+                        ui.label(env!("CARGO_PKG_VERSION"));
+                        ui.end_row();
+                        
+                        ui.label("Author");
+                        ui.hyperlink_to("Alpar Duman", "https://alparduman.de/");
+                        ui.end_row();
+                        
+                        ui.label("License");
+                        ui.hyperlink_to("GNU General Public License v3.0", "https://github.com/AlparDuman/primes-rust/blob/main/LICENSE");
+                        ui.end_row();
 
-                        });
+                    });
                 },
                 _ => {}
             }
