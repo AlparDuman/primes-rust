@@ -13,10 +13,18 @@ fn main() -> eframe::Result {
     }
 
     println!("Hello, world!");
+    // println!("{}", i64::MAX); // 9223372036854775807
+    // println!("{}", u64::MAX); // 18446744073709551615
 
     eframe::run_native(
-        "Primes",
-        eframe::NativeOptions::default(),
+        "Primes Rust",
+        eframe::NativeOptions {
+            viewport:egui::ViewportBuilder::default()
+                .with_title("Primes Rust")
+                .with_inner_size([286.0, 286.0])
+                .with_min_inner_size([286.0, 286.0]),
+            ..Default::default()
+        },
         Box::new(|_cc| Ok(Box::new(PrimeApp::default())))
     )
 }
@@ -69,11 +77,15 @@ impl eframe::App for PrimeApp {
 
             match self.tab_current {
                 0 => {
-                    egui::Grid::new("about_grid").show(ui, |ui| {
+
+                    egui::Grid::new("about_grid")
+                        .min_col_width(0.0)
+                        .show(ui, |ui| {
 
                         ui.label("Start");
+
                         let input_start = ui.add_sized(
-                            [175.0, 20.0],
+                            [141.0, 20.0],
                             egui::TextEdit::singleline(&mut self.input_start_value)
                                 .font(egui::TextStyle::Monospace)
                         );
@@ -94,15 +106,21 @@ impl eframe::App for PrimeApp {
                                 }
                             }
                         }
+
                         if ui.button("Check").clicked() {
                             println!("Pressed button 'Check'");
                         }
+
+                        ui.label("");
                         
-                        ui.end_row();
+                        if ui.ctx().screen_rect().width() < 528.0 {
+                            ui.end_row();
+                        }
 
                         ui.label("Range");
+
                         let input_range = ui.add_sized(
-                            [175.0, 20.0],
+                            [141.0, 20.0],
                             egui::TextEdit::singleline(&mut self.input_range_value)
                                 .font(egui::TextStyle::Monospace)
                         );
@@ -122,13 +140,15 @@ impl eframe::App for PrimeApp {
                                 }
                             }
                         }
+
                         if ui.button("Count").clicked() {
                             println!("Pressed button 'Count'");
                         }
-                        
+
                         if ui.button("List").clicked() {
                             println!("Pressed button 'List'");
                         }
+
                         ui.end_row();
 
                     });
@@ -136,6 +156,7 @@ impl eframe::App for PrimeApp {
                     ui.add_space(5.0);
                     egui::ScrollArea::vertical()
                         .auto_shrink([false, false])
+                        .max_height(ui.available_height() - 25.0)
                         .show(ui, |ui| {
                             ui.add_sized(
                                 ui.available_size(),
@@ -145,6 +166,15 @@ impl eframe::App for PrimeApp {
                                     .interactive(false)
                             );
                         });
+                    
+                    ui.add_space(5.0);
+                    let output_save = ui.add_sized(
+                        [ui.available_width(), 0.0],
+                        egui::Button::new("Save")
+                    );
+                    if output_save.clicked() {
+                        println!("Pressed button 'Save'");
+                    }
                 },
                 1 => {
                     ui.heading("Validation page");
