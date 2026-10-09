@@ -1,4 +1,7 @@
-// #![windows_subsystem = "windows"]
+#![cfg_attr(
+    hide_console,
+    windows_subsystem = "windows"
+)]
 use std::env;
 use eframe::egui;
 
