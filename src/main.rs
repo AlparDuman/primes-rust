@@ -3,11 +3,53 @@
     windows_subsystem = "windows"
 )]
 use std::env;
+use std::time::Instant;
 use eframe::egui;
 
 
 
+
+
+
+// Implementation BitArray
+
+/*struct BitArray {
+    mask: [u8; 30],
+    field: Vec<u8>
+}
+
+impl BitArray {
+    fn new(size: usize) -> Self {
+        let mask = [0, 0x1, 0, 0, 0, 0, 0, 0x2, 0, 0, 0, 0x4, 0, 0x8, 0, 0, 0, 0x10, 0, 0x20, 0, 0, 0, 0x40, 0, 0, 0, 0, 0, 0x80];
+        BitArray {
+            mask,
+            field: vec![0; (size / 30) + 1]
+        }
     }
+
+    #[inline(always)]
+    fn set(&mut self, number: usize) {
+        let mask = self.mask[number % 30];
+        if mask != 0 {
+            let idx = number / 30;
+            self.field[idx] |= mask;
+        }
+    }
+
+    #[inline(always)]
+    fn get(&self, number: usize) -> bool {
+        let mask = self.mask[number % 30];
+        if mask != 0 {
+            let idx = number / 30;
+            return (self.field[idx] & mask) == 0;
+        }
+        false
+    }
+
+    fn get_field(self) -> Vec<u8> {
+        self.field
+    }
+}*/
 
 
 
