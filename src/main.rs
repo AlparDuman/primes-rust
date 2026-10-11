@@ -10,6 +10,118 @@ use eframe::egui;
     }
 
 
+
+
+
+
+// Implementation Primes
+
+pub struct Primes {
+    /*cache_small: Vec<usize>,
+    cache_small_size: usize,
+    demask: [(u8, usize); 8]*/
+}
+
+
+
+impl Primes {
+    pub fn new() -> Self {
+        /*let cache_small = Vec::new();
+        let cache_small_size = 0;
+        let demask = [(0, 0); 8];*/
+
+        Primes {
+            /*cache_small,
+            cache_small_size,
+            demask*/
+        }
+    }
+
+    pub fn test(&self, buffer: &mut String) {
+        fn is_test(number: isize) -> bool {
+            if number < 2 || (number != 2 && number % 2 == 0) {
+                return false;
+            }
+            let limit = number.isqrt();
+            for divisor in (3..=limit).step_by(2) {
+                if number % divisor == 0 {
+                    return false;
+                }
+            }
+            true
+        }
+
+        fn list_test<F>(range: isize, mut start: isize, mut action: F) where F: FnMut(isize) {
+            let end = start + range;
+            if range < 1 || end < start {
+                return;
+            }
+            if start <= 2 && end >= 2 {
+                action(2);
+            }
+            if start % 2 == 0 {
+                start += 1;
+            }
+            for number in (start..=end).step_by(2) {
+                if is_test(number) {
+                    action(number);
+                }
+            }
+        }
+
+        fn count_test(range: isize, start: isize) -> isize {
+            let mut primes = 0;
+            list_test(range, start, |_| primes += 1);
+            primes
+        }
+
+        fn get_test(range: isize, start: isize) -> Vec<isize> {
+            let mut primes = Vec::new();
+            list_test(range, start, |number| primes.push(number));
+            primes
+        }
+
+        let mut measure_begin;
+        let mut measure_duration;
+        let start = 0;
+        let range = 20;
+        buffer.clear();
+
+        measure_begin = Instant::now();
+        let measure_result = count_test(range, start);
+        measure_duration = measure_begin.elapsed().as_secs_f64() * 1000.0;
+        buffer.push_str(&format!("Reference counted {} primes in {:.2}ms", measure_result.to_string(), measure_duration));
+
+        measure_begin = Instant::now();
+        let measure_result = get_test(range, start);
+        measure_duration = measure_begin.elapsed().as_secs_f64() * 1000.0;
+//        let measure_result_len = measure_result.len();
+//        if measure_result_len > 6 {
+            let measure_result = format!("{:?},..,{:?}", &measure_result[0..3], &measure_result[(measure_result.len() - 3)..]);
+//        }
+/*        if measure_result.len() < 6 {
+            let measure_result = measure_result.iter().map(|x| x.to_string()).collect::<Vec<String>>().join(",");
+        } else {
+            let measure_result = format!("{:?},..,{:?}", &measure_result[0..3], &measure_result[(measure_result.len() - 3)..]);
+        }*/
+        buffer.push_str(&format!("\nReference listed {:?} primes in {:.2}ms", measure_result, measure_duration));
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        println!("{}",  is_test(1000099));
+//        println!("{:?}", get_test(100, 1000000));
+//        println!("{:?}", count_test(100, 1000000));
+    }
 }
 
 
