@@ -7,45 +7,34 @@ use eframe::egui;
 
 
 
-fn main() -> eframe::Result {
-    unsafe {
-        windows_sys::Win32::System::Console::AttachConsole(u32::MAX);
     }
 
-    println!("Hello, world!");
-    // println!("{}", i64::MAX); // 9223372036854775807
-    // println!("{}", u64::MAX); // 18446744073709551615
 
-    eframe::run_native(
-        "Primes Rust",
-        eframe::NativeOptions {
-            viewport:egui::ViewportBuilder::default()
-                .with_title("Primes Rust")
-                .with_inner_size([286.0, 286.0])
-                .with_min_inner_size([286.0, 286.0]),
-            ..Default::default()
-        },
-        Box::new(|_cc| Ok(Box::new(PrimeApp::default())))
-    )
 }
 
 
 
+
+
+
+// Implementation PrimeApp
+
 struct PrimeApp {
+    engine: Primes,
     tab_current: usize,
     tab_names: [&'static str; 4],
     input_start_value: String,
     input_start_value_previous: String,
     input_range_value: String,
     input_range_value_previous: String,
-    output_results_value: String
+    output_results_value: String,
+    buffer_test: String
 }
-
-
 
 impl Default for PrimeApp {
     fn default() -> Self {
         Self {
+            engine: Primes::new(),
             tab_current: 0,
             tab_names: ["Functions", "Validation", "Explanation", "About"],
             input_start_value: String::new(),
@@ -53,11 +42,10 @@ impl Default for PrimeApp {
             input_range_value: String::new(),
             input_range_value_previous: String::new(),
             output_results_value: String::new(),
+            buffer_test: String::new()
         }
     }
 }
-
-
 
 impl eframe::App for PrimeApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
@@ -77,7 +65,6 @@ impl eframe::App for PrimeApp {
 
             match self.tab_current {
                 0 => {
-
                     egui::Grid::new("about_grid")
                         .min_col_width(0.0)
                         .show(ui, |ui| {
@@ -177,7 +164,16 @@ impl eframe::App for PrimeApp {
                     }
                 },
                 1 => {
-                    ui.heading("Validation page");
+                    let run_self_test = ui.add_sized(
+                        [ui.available_width(), 0.0],
+                        egui::Button::new("Run Self-Test")
+                    );
+                    if run_self_test.clicked() {
+                        println!("Pressed button 'Run Self-Test'");
+                        self.engine.test(&mut self.buffer_test);
+                    }
+                    ui.add_space(5.0);
+                    ui.label(&self.buffer_test);
                 },
                 2 => {
                     ui.heading("Explanation page");
