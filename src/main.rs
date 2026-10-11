@@ -211,6 +211,37 @@ impl eframe::App for PrimeApp {
 }
 
 
+
+
+
+
+// Main
+
+fn main() -> eframe::Result {
+    unsafe {
+        windows_sys::Win32::System::Console::AttachConsole(u32::MAX);
+    }
+
+    println!("Hello, world!");
+    // println!("{}", i64::MAX); // 9223372036854775807
+    // println!("{}", u64::MAX); // 18446744073709551615
+//    let engine = Primes::new();
+//    engine.test();
+
+    eframe::run_native(
+        "Primes Rust",
+        eframe::NativeOptions {
+            viewport:egui::ViewportBuilder::default()
+                .with_title("Primes Rust")
+                .with_inner_size([286.0, 286.0])
+                .with_min_inner_size([286.0, 286.0]),
+            ..Default::default()
+        },
+        Box::new(|_cc| Ok(Box::new(PrimeApp::default())))
+    )
+}
+
+
 /*fn pause() {
     let mut stdout = io::stdout();
     print!("Press Enter to continue..");
