@@ -82,7 +82,7 @@ impl eframe::App for PrimeApp {
                             if self.input_start_value.is_empty() {
                                 self.input_start_value_previous.clear();
                             } else {
-                                match self.input_start_value.parse::<i64>() {
+                                match self.input_start_value.parse::<isize>() {
                                     Ok(_) => {
                                         self.input_start_value = self.input_start_value.trim_start_matches('0').to_string();
                                         self.input_start_value_previous = self.input_start_value.clone();
@@ -117,7 +117,7 @@ impl eframe::App for PrimeApp {
                             if self.input_range_value.is_empty() {
                                 self.input_range_value_previous.clear();
                             } else {
-                                match self.input_range_value.parse::<i64>() {
+                                match self.input_range_value.parse::<isize>() {
                                     Ok(_) => {
                                         self.input_range_value_previous = self.input_range_value.clone();
                                     }
